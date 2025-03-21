@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yunox株式会社 - 動画制作・配信・マネジメント</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/tech-style.css">
     <link rel="stylesheet" href="css/tech-style-sections.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -14,7 +16,7 @@
     <header>
         <div class="container">
             <div class="logo">
-                <h1><a href="#top">Yunox<span>株式会社</span></a></h1>
+                <a href="#top"><img src="images/logo.png" alt="Yunox株式会社" class="logo-image"></a>
             </div>
             <nav>
                 <ul>
@@ -35,7 +37,7 @@
         <div class="particles" id="particles"></div>
         <div class="container">
             <h2><span>クリエイティブ</span>の力で<br>未来を創造する</h2>
-            <p>動画制作・配信からタレントマネジメントまで、コンテンツの可能性を最大化</p>
+            <p>動画制作・配信からタレントマネジメントまで、<br>コンテンツの可能性を最大化</p>
             <div class="hero-buttons">
                 <a href="#contact" class="btn">お問い合わせ</a>
             </div>
@@ -226,7 +228,7 @@
                     <h3>お問い合わせ</h3>
                     <p>お仕事のご依頼やサービスに関するお問い合わせは、お電話またはメールフォームよりお気軽にご連絡ください。</p>
                     <p>TEL: 080-3529-0721</p>
-                    <p class="email-address">Email: common.yunox@gmail.com</p>
+                    <p class="email-address">Email: info@yunox.jp</p>
                 </div>
             </div>
             <div class="copyright">
@@ -250,14 +252,31 @@
             // フォームの値を取得
             const formData = new FormData(form);
             
-            // フォームの値をPHPスクリプトに送信
-            fetch('send_mail.php', {
+            // フォームデータを整形
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject') || 'お問い合わせ';
+            const message = formData.get('message');
+            
+            // 日本語で整形されたコンテンツを作成
+            const formattedContent = `【お問い合わせ内容】<br><br>` +
+                                    `■ お名前：<br>${name}<br><br>` +
+                                    `■ メールアドレス：<br>${email}<br><br>` +
+                                    `■ 件名：<br>${subject}<br><br>` +
+                                    `■ お問い合わせ内容：<br>${message.replace(/\n/g, '<br>')}`;
+            
+            // webhookにデータを送信
+            fetch('https://hook.us1.make.com/m5kmfwdvdlxbqshtxhrjobqqolploqia', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: formattedContent
+                })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then(response => {
+                if (response.ok) {
                     // 成功メッセージを表示
                     document.getElementById('form-success').style.display = 'block';
                     document.getElementById('form-error').style.display = 'none';
@@ -267,9 +286,10 @@
                     // エラーメッセージを表示
                     document.getElementById('form-error').style.display = 'block';
                     document.getElementById('form-success').style.display = 'none';
+                    console.error('送信エラー:', response.status);
                 }
                 
-                // 5秒後に成功メッセージを非表示にする
+                // 5秒後に成功・エラーメッセージを非表示にする
                 setTimeout(() => {
                     document.getElementById('form-success').style.display = 'none';
                     document.getElementById('form-error').style.display = 'none';
