@@ -101,9 +101,9 @@ header {
     top: 0;
     left: 0;
     padding: 8px 0;
-    z-index: 1000;
+    z-index: 1000; 
     transition: all 0.3s ease;
-    background-color: transparent;
+    background-color: transparent; 
 }
 
 header.scrolled {
@@ -317,13 +317,13 @@ header.scrolled .menu-toggle {
     background: linear-gradient(rgba(46, 2, 89, 0.6), rgba(94, 15, 139, 0.7)), url('../images/hero.jpg');
     background-size: cover;
     background-position: center;
-    height: 66vh; /* u753bu9762u306e2/3 */
+    height: 66vh; /* u753bu9762u306e2/3u306bu8a2du5b9a */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--light-text);
-    margin-top: 0;
+    margin-top: 0; /* u30deu30fcu30b8u30f3u3092u524au9664u3057u3001u4e0au90e8u307eu3067u8868u793a */
     position: relative;
     overflow: hidden;
     width: 100vw;
@@ -331,6 +331,13 @@ header.scrolled .menu-toggle {
     right: 0;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
+    z-index: 0; /* u80ccu666fu3092u5f8cu308du306bu8868u793a */
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+    padding-top: 60px; /* u30d8u30c3u30c0u30fcu306eu9ad8u3055u5206u3060u3051u4e0bu3052u308b */
 }
 
 .hero:before {
@@ -376,11 +383,6 @@ header.scrolled .menu-toggle {
     .hero p br {
         display: none;
     }
-}
-
-.hero .container {
-    position: relative;
-    z-index: 2;
 }
 
 .hero h2 {
@@ -489,4 +491,61 @@ footer:before {
     width: 100%;
     height: 5px;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+}
+
+/* u30e2u30d0u30a4u30ebu30e1u30cbu30e5u30fcu7528u306eu30b9u30bfu30a4u30eb */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    
+    nav ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: transparent; 
+        flex-direction: column;
+        padding: 20px 0;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+    }
+    
+    nav ul.active {
+        display: flex;
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        background-color: var(--dark-bg); 
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    nav ul li {
+        margin: 0;
+        width: 100%;
+        text-align: center;
+    }
+    
+    nav ul li a {
+        display: block;
+        padding: 15px 0;
+        color: var(--light-text);
+    }
+    
+    nav ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* u30d2u30fcu30edu30b7u30e7u30f3u306eu8abfu6574 */
+    .hero h2 {
+        font-size: 2.5em;
+    }
+    
+    .hero p {
+        font-size: 1.1em;
+    }
 }
